@@ -1,0 +1,51 @@
+{% extends 'shopapp/base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+    {% translate 'Product' %} #{{product.pk}}
+{% endblock %}
+
+{% block body %}
+<h1>{% translate 'Product' %} <strong>{{ product.name }}</strong></h1>
+<div>
+    <div>{% translate 'Description' %}: <em>{{ product.description }}</em></div>
+    <div>{% translate 'Price' %}: {{ product.price }}</div>
+    <div>{% translate 'Discount' %}: {{ product.discount }}</div>
+    <div>{% translate 'Archived' context 'Product status' %}: {{ product.archived }}</div>
+    {% if product.preview %}
+        <img src="{{ product.preview.url }}" alt="{{ product.preview.name }}">
+    {% endif %}
+    <h3>{% translate 'Images' %}</h3>
+    <div>
+        {% if product.images.all|length != 0 %}
+            {% blocktranslate count images_count=product.images.all|length %}
+            There is only one image
+            {% plural %}
+            There are {{ images_count }} images
+            {% endblocktranslate %}
+        {% endif %}
+    </div>
+    <div>
+        {% for img in product.images.all %}
+            <div>
+                <img src="{{img.image.url}}" alt="{{img.image.name}}">
+                <div>{{ img.description }}</div>
+            </div>
+        {% empty %}
+            <div>{% translate 'No images uploaded yet' %}</div>
+        {% endfor %}
+    </div>
+</div>
+<p>{% translate 'Created by' %}: {% firstof object.created_by.first_name object.created_by.username %}</p>
+<div>
+    <a href="{% url 'shopapp:product_update' pk=product.pk %}">{% translate 'Update product' %}</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:product_delete' pk=product.pk %}">{% translate 'Archive product' %}</a>
+</div>
+<div>
+    <a href="{% url 'shopapp:products_list' %}"
+    >{% translate 'Back to products list' %}</a>
+</div>
+{% endblock %}

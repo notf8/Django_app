@@ -1,0 +1,21 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Shop index
+{% endblock %}
+
+{% block body %}
+    <h1> Список доступных страниц </h1>
+    <div>
+        <ul>
+            {% for link in links %}
+                <li><a href={{link.address}}>{{link.title}}</a></li>
+            {% empty %}
+                No links here
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        Time running: {{time_running}}
+    </div>
+{% endblock %}
