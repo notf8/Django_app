@@ -43,7 +43,7 @@ DEBUG = getenv("DJANGO_DEBUG", "0") == "1"
 ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
-]
+] + getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -210,3 +210,29 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+LOGLEVEL = getenv("DJANGO_LOGLEVEL", "info").upper()
+
+logging.config.dictConfig({
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": "%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+    },
+    "loggers": {
+        "": {
+            "level": LOGLEVEL,
+            "handlers": [
+                "console",
+            ],
+        },
+    },
+})
