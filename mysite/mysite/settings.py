@@ -13,11 +13,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as tr
+import sentry_sdk
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASE_DIR = BASE_DIR/"database"
+DATABASE_DIR.mkdir(exist_ok=True)
 
-import sentry_sdk
 
 sentry_sdk.init(
     dsn="https://6dc8a78edfbae6dbc24c78bba9072649@o4505901180715008.ingest.sentry.io/4505901229473792",
